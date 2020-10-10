@@ -178,9 +178,9 @@ if __name__ == '__main__':
     # Set Telegram Bot
     telegram_bot_config = json.load(open('telegram_bot.json', 'r'))
     print(telegram_bot_config['channel_share_link'])
-    # client2 = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
-    # client2.start()
-    # client2.disconnect()
+    client2 = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
+    client2.start()
+    client2.disconnect()
     client = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
     client.connect()
     channel = client.get_entity(telegram_bot_config['channel_share_link'])
