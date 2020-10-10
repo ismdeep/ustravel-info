@@ -9,6 +9,7 @@ import parsel
 import json
 
 from telethon.sync import TelegramClient
+from telethon.tl.functions.messages import ImportChatInviteRequest
 from telethon import functions
 
 username = 'ismdeep@live.com'
@@ -180,6 +181,7 @@ if __name__ == '__main__':
     print(telegram_bot_config['channel_share_link'])
     client2 = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
     client2.start()
+    updates = asyncio.run(client2(ImportChatInviteRequest(telegram_bot_config['channel_share_link'])))
     client2.disconnect()
     client = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
     client.connect()
