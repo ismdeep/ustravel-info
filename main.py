@@ -1,4 +1,3 @@
-# coding:utf-8
 import requests
 import os
 import sys
@@ -9,8 +8,8 @@ import json
 from telethon.sync import TelegramClient
 from telethon import functions
 
-username = 'ismdeep@live.com'
-password = '512china'
+username = None
+password = None
 
 client = None
 channel = None
@@ -173,7 +172,10 @@ if __name__ == '__main__':
         exit(0)
     os.chdir(sys.argv[1])
     init_logging()
-
+    # Load Username and Password
+    account_config = json.load(open('account.json', 'r'))
+    username = account_config['username']
+    password = account_config['password']
     # Set Telegram Bot
     telegram_bot_config = json.load(open('telegram_bot.json', 'r'))
     client = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
