@@ -5,8 +5,6 @@ import sys
 import logging
 import parsel
 import json
-import datetime
-import time
 
 from telethon.sync import TelegramClient
 from telethon import functions
