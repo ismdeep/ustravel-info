@@ -1,6 +1,4 @@
 # coding:utf-8
-import asyncio
-
 import requests
 import os
 import sys
@@ -9,7 +7,6 @@ import parsel
 import json
 
 from telethon.sync import TelegramClient
-from telethon.tl.functions.messages import ImportChatInviteRequest
 from telethon import functions
 
 username = 'ismdeep@live.com'
@@ -23,6 +20,7 @@ host_domain_url = 'https://' + host_domain
 login_post_url = host_domain_url + '/dologin.php'
 home_page_url = host_domain_url + '/clientarea.php'
 service_list_url = host_domain_url + '/clientarea.php?action=services'
+
 
 def init_logging():
     logging.basicConfig(
@@ -148,16 +146,15 @@ def get_product_list(__cookie__):
     return products
 
 
-async def send_product_list(__products__):
-    print('send_product_list()')
-    print(__products__)
+def send_product_list(__products__):
     for product in __products__:
-        await client(functions.messages.SendMessageRequest(
+        message_text = "%s(%s)\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB\n" % (
+            product['name'], product['port'], product['info']['next_pay_date'],
+            product['info']['used'], product['info']['available']
+        )
+        client(functions.messages.SendMessageRequest(
             peer=channel,
-            message="%s(%s)\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB\n" % (
-                product['name'], product['port'], product['info']['next_pay_date'],
-                product['info']['used'], product['info']['available']
-            ),
+            message=message_text,
             no_webpage=True
         ))
     logging.info("Email sent successfully.")
@@ -166,7 +163,8 @@ async def send_product_list(__products__):
 def main():
     cookie = get_cookie()
     products = get_product_list(cookie)
-    asyncio.run(send_product_list(products))
+    send_product_list(products)
+    client.disconnect()
 
 
 if __name__ == '__main__':
@@ -178,11 +176,6 @@ if __name__ == '__main__':
 
     # Set Telegram Bot
     telegram_bot_config = json.load(open('telegram_bot.json', 'r'))
-    print(telegram_bot_config['channel_share_link'])
-    client2 = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
-    client2.start()
-    updates = asyncio.run(client2(ImportChatInviteRequest(telegram_bot_config['channel_share_link'])))
-    client2.disconnect()
     client = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
     client.connect()
     channel = client.get_entity(telegram_bot_config['channel_share_link'])
