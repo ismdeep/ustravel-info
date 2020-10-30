@@ -8,6 +8,8 @@ import json
 from telethon.sync import TelegramClient
 from telethon import functions
 
+from monitor_util.monitor_util import MonitorUtil
+
 username = None
 password = None
 
@@ -142,6 +144,7 @@ def get_product_list(__cookie__):
             'port': product_port,
             'info': get_product_info('/clientarea.php?action=productdetails&id=' + product_id, __cookie__)
         })
+    MonitorUtil.update_status('ustravel-info.getter', 'true')
     return products
 
 
@@ -156,6 +159,7 @@ def send_product_list(__products__):
             message=message_text,
             no_webpage=True
         ))
+    MonitorUtil.update_status('ustravel-info.sender', 'true')
     logging.info("Email sent successfully.")
 
 
@@ -163,6 +167,7 @@ def main():
     cookie = get_cookie()
     products = get_product_list(cookie)
     send_product_list(products)
+    MonitorUtil.update_status('ustravel-info', 'true')
     client.disconnect()
 
 
@@ -176,6 +181,11 @@ if __name__ == '__main__':
     account_config = json.load(open('account.json', 'r'))
     username = account_config['username']
     password = account_config['password']
+    # Load Monitor Config
+    monitor_json = json.load(open('monitor.json', 'r'))
+    monitor = MonitorUtil()
+    monitor.set_url(monitor_json['url'])
+    monitor.set_token(monitor_json['token'])
     # Set Telegram Bot
     telegram_bot_config = json.load(open('telegram_bot.json', 'r'))
     client = TelegramClient('anon', telegram_bot_config['api_id'], telegram_bot_config['api_hash'])
