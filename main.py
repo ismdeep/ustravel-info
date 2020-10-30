@@ -1,5 +1,3 @@
-import asyncio
-
 import requests
 import os
 import sys
@@ -146,7 +144,7 @@ def get_product_list(__cookie__):
             'port': product_port,
             'info': get_product_info('/clientarea.php?action=productdetails&id=' + product_id, __cookie__)
         })
-    asyncio.run(MonitorUtil.update_status('ustravel-info.getter', 'true'))
+    MonitorUtil.update_status('ustravel-info.getter', 'true')
     return products
 
 

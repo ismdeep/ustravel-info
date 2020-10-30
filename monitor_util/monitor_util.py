@@ -16,7 +16,7 @@ class MonitorUtil(object):
         self.token = __token__
 
     @staticmethod
-    async def update_status(key_name, value):
+    def update_status(key_name, value):
         monitor = MonitorUtil()
         req = requests.post(
             url=monitor.url,
