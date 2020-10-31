@@ -151,9 +151,9 @@ def get_product_list(__cookie__):
 
 def send_product_list(__products__):
     for product in __products__:
-        message_text = "%s(%s)\n%s\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB" % (
+        message_text = "%s(%s)\n当前日期：%s\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB" % (
             product['name'], product['port'],
-            time.asctime(),
+            time.strftime("%Y-%m-%d", time.localtime()),
             product['info']['next_pay_date'],
             product['info']['used'], product['info']['available']
         )
