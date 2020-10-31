@@ -4,6 +4,7 @@ import sys
 import logging
 import parsel
 import json
+import time
 
 from telethon.sync import TelegramClient
 from telethon import functions
@@ -150,8 +151,10 @@ def get_product_list(__cookie__):
 
 def send_product_list(__products__):
     for product in __products__:
-        message_text = "%s(%s)\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB" % (
-            product['name'], product['port'], product['info']['next_pay_date'],
+        message_text = "%s(%s)\n%s\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB" % (
+            product['name'], product['port'],
+            time.asctime(),
+            product['info']['next_pay_date'],
             product['info']['used'], product['info']['available']
         )
         client(functions.messages.SendMessageRequest(
