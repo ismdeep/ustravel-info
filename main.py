@@ -113,12 +113,15 @@ def get_product_info(__url__, __cookie__):
     used_mount = used_mount[:used_mount.find('GB')].strip()
     available_mount = info_data.xpath('//p[@class="traffic-text"]/text()').extract()[1].strip()[len('剩余流量  : '):]
     available_mount = available_mount[:available_mount.find('GB')].strip()
+    countdown_time = info_data.xpath('//div[@class="countdown"]//div[@class="countdown-time"]//strong/text()').extract()[0]
+    next_pay_date = '%s-%s-%s' % (next_pay_date.split('/')[2],next_pay_date.split('/')[0],next_pay_date.split('/')[1])
     return {
         'name': product_name,
         'renew_url': renew_url,
         'next_pay_date': next_pay_date,
         'used': used_mount,
-        'available': available_mount
+        'available': available_mount,
+        'countdown_time': countdown_time,
     }
 
 
@@ -154,11 +157,13 @@ def get_product_list(__cookie__):
 
 def send_product_list(__products__):
     for product in __products__:
-        message_text = "%s(%s)\n当前日期：%s\n下次付款：%s\n已用流量：%s GB\n剩余流量：%s GB" % (
+        message_text = "%s(%s)\n当前日期：%s\n下次付款：%s\n下次重置：%s 日后\n已用流量：%s GB\n剩余流量：%s GB" % (
             product['name'], product['port'],
             time.strftime("%Y-%m-%d", time.localtime()),
             product['info']['next_pay_date'],
-            product['info']['used'], product['info']['available']
+            product['info']['countdown_time'],
+            product['info']['used'],
+            product['info']['available']
         )
         client(functions.messages.SendMessageRequest(
             peer=channel,
