@@ -132,6 +132,9 @@ def get_product_list(__cookie__):
     content = req.text
     html = parsel.Selector(content)
     items = html.xpath('//table[@id="tableServicesList"]//span[@class="label status status-active"]/../..').extract()
+    if len(items) <= 0:
+        logging.error("Not Products??????????")
+        exit(0)
     products = []
     for item_raw in items:
         item_data = parsel.Selector(item_raw)
