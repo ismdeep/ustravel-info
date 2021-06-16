@@ -17,7 +17,7 @@ password = None
 client = None
 channel = None
 
-host_domain = 'www.ustravel.cloud'
+host_domain = 'www.q1travel.cloud'
 host_domain_url = 'https://' + host_domain
 login_post_url = host_domain_url + '/dologin.php'
 home_page_url = host_domain_url + '/clientarea.php'
@@ -35,7 +35,7 @@ def init_logging():
 
 def get_headers():
     headers = {
-        'Host': 'www.ustravel.cloud',
+        'Host': host_domain,
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/85.0.4183.83 Safari/537.36 '
     }
