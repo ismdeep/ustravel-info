@@ -10,6 +10,8 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: Check out code
+        uses: actions/checkout@v1
       - name: Docker release
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
