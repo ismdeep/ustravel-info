@@ -1,4 +1,4 @@
 requests~=2.24.0
-lxml~=4.6.3
+lxml>=4.9.1
 parsel~=1.6.0
 Telethon~=1.16.4
